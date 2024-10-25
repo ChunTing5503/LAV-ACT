@@ -73,7 +73,6 @@ class DETRVAE(nn.Module):
         self.query_embed = nn.Embedding(num_queries, hidden_dim)
         if backbones is not None:
             self.input_proj = nn.Conv2d(backbones[0].num_channels, hidden_dim, kernel_size=1)
-            #self.input_proj = nn.Conv2d(backbones[0].num_channels+384, hidden_dim, kernel_size = 1) # 384 <- voltron dense vector embed size
             self.backbones = nn.ModuleList(backbones)
             self.input_proj_robot_state = nn.Linear(14, hidden_dim)
         else:
@@ -102,7 +101,7 @@ class DETRVAE(nn.Module):
         # FiLM layer
         self.film_layer = FiLM(512, 384)
 
-    def forward(self, qpos, image, env_state, actions=None, is_pad=None):
+    def forward(self, qpos, image,lang_prompt, env_state, actions=None, is_pad=None):
         """
         qpos: batch, qpos_dim
         image: batch, num_cam, channel, height, width
@@ -150,7 +149,8 @@ class DETRVAE(nn.Module):
                 features = features[0] # take the last layer feature
 
                 # Voltron ===
-                lang = ["grip red cube with right arm transfer to left arm"]
+                #lang = ["grip red cube with right arm transfer to left arm"]
+                lang = [lang_prompt]
                 present_frame = CenterCrop(224)(Resize(size = (170, 224))(image[:, cam_id, 0]))
                 prev_frame = CenterCrop(224)(Resize(size = (170, 224))(image[:, cam_id, 1]))
                 

@@ -13,6 +13,7 @@ class ACTPolicy(nn.Module):
         self.model = model # CVAE decoder
         self.optimizer = optimizer
         self.kl_weight = args_override['kl_weight']
+        self.lang_prompt = args_override['lang_prompt']
         print(f'KL Weight {self.kl_weight}')
 
     def __call__(self, qpos, image, actions=None, is_pad=None):
@@ -24,7 +25,7 @@ class ACTPolicy(nn.Module):
             actions = actions[:, :self.model.num_queries]
             is_pad = is_pad[:, :self.model.num_queries]
 
-            a_hat, is_pad_hat, (mu, logvar) = self.model(qpos, image, env_state, actions, is_pad)
+            a_hat, is_pad_hat, (mu, logvar) = self.model(qpos, image, self.lang_prompt, env_state, actions, is_pad)
             total_kld, dim_wise_kld, mean_kld = kl_divergence(mu, logvar)
             loss_dict = dict()
             all_l1 = F.l1_loss(actions, a_hat, reduction='none')

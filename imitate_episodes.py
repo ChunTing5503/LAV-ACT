@@ -49,6 +49,7 @@ def main(args):
     # fixed parameters
     state_dim = 14
     lr_backbone = 5e-6
+    lang_prompt = 'insert red peg into blue socket'
     backbone = 'resnet18'
     if policy_class == 'ACT':
         enc_layers = 4
@@ -65,6 +66,7 @@ def main(args):
                          'dec_layers': dec_layers,
                          'nheads': nheads,
                          'camera_names': camera_names,
+                         'lang_prompt': lang_prompt
                          }
     elif policy_class == 'CNNMLP':
         policy_config = {'lr': args['lr'], 'lr_backbone': lr_backbone, 'backbone' : backbone, 'num_queries': 1,
