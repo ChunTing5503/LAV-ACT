@@ -161,7 +161,6 @@ class DETRVAE(nn.Module):
                 # FiLM
                 features = self.film_layer(voltron_representation, features)
 
-                #features = torch.cat((voltron_representation, features), dim = 1)
                 pos = pos[0]
 
                 all_cam_features.append(self.input_proj(features))
