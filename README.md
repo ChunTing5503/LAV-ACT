@@ -23,7 +23,7 @@ Refer to the original [ACT code base](https://github.com/tonyzhaozh/act) to set 
 You can run both training and evaluation using the commands described in [ACT code base](https://github.com/tonyzhaozh/act).
 
 ### Implementation notes
-* **Language conditioning:** Voltron takes language as input, and you can set the corresponding language prompt of the task by seting the `lang_pompt` variable in `/imitate_episodes.py`. 
+* **Language conditioning:** Voltron takes language as input, and you can set the corresponding language prompt of the task by seting the `lang_pompt` variable in the main() function in `/imitate_episodes.py`. 
 * **Dual images conditioning:** Two images are passed to Voltron, one of the current timestep and one of a previous timestep. Only the current image observation is passed to the Resnet backbone. `EpisodicDataset` in `/utils.py` is modified to include two images (present_frame, prev_frame) per datapoint. The function `eval_bc` in `/imitate_episodes.py` is also modified to pass two observation images to the model during test time.
 * **Learning rate and finetuning:** Voltron's weight is unfreezed and finetuned with learning rate 5e-6, which is set by the variable `lr_backbone`. The weights other part of the ACT network and Resnet backbone are updated by a learning rate of 1e-5, as used in the original ACT.
  

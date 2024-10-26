@@ -153,7 +153,7 @@ def get_image(ts, camera_names):
 def get_prev_image(image_list, time_step, camera_names):
     prev_images = []
     for cam_name in camera_names:
-        prev_image = rearrange(image_list[max(0, time_step)][camera_names[0]], 'h w c -> c h w')
+        prev_image = rearrange(image_list[max(0, time_step)][cam_name], 'h w c -> c h w')
         prev_images.append(prev_image)
     prev_image = np.stack(prev_images, axis=0)
     prev_image = torch.from_numpy(prev_image / 255.0).float().cuda().unsqueeze(0)
